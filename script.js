@@ -546,7 +546,6 @@
 // }
 
 // constatnt
-const heroId = 97
 const URL = "https://cdn.cloudflare.steamstatic.com/apps/dota2/videos/dota_react/heroes/renders/"
 const ABILITIES_URL = "https://steamcdn-a.akamaihd.net"
 const ICON_URL = "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/icons/"
@@ -564,6 +563,7 @@ const BASE_API = "https://api.opendota.com/api";
 let heroes;
 let heroesAbilities;
 let abilities;
+let heroId = 1
 
 // get DOM element node
 const heroCardNode = document.getElementsByClassName("hero-card")[0]
@@ -585,6 +585,11 @@ const heroBaseNode = heroCardFrontNode.getElementsByClassName("hero-base")[0]
 // modal
 const heroTalentTooltipNode = document.getElementsByClassName("talent-tooltip")[0]
 const heroAbilityTooltipNode = document.getElementsByClassName("ability-tooltip")[0]
+
+const urlSearchParams = new URLSearchParams(window.location.search);
+const params = Object.fromEntries(urlSearchParams.entries());
+
+heroId = params.heroId ?? 1
 
 async function getData(constants){
   let response = await fetch(`${BASE_API}/constants/${constants}`);
