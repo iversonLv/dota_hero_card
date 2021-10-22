@@ -1,0 +1,540 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
+
+:root {
+  font-family: 'Roboto', sans-serif;
+  background: grey;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  background-image: url(./images/greyfade.jpg);
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+h1 {
+  margin: 0;
+  padding: 0;
+}
+
+
+
+.hero-card {
+  transform-style: preserve-3d;
+  transition: all .5s ease;
+  border-radius: 5px;
+  width: 400px;
+  height: 600px;
+  margin: 100px auto;
+  border: 1px solid rgb(40 40 40);
+  box-shadow: 0px 0px 8px #000;
+}
+
+.hero-card-front {
+  position: absolute;
+  left: 0;
+  border-radius: inherit;
+  z-index: 1;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  transform: rotateY(180deg);
+}
+
+.hero-card-back {
+  backface-visibility: hidden;
+  border-radius: inherit;
+  background-image: url(./images/greyfade.jpg);
+  background-color: rgb(21 27 29);
+  background-size: 100% 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-card-back img {
+  width: 50%;
+}
+
+.hero-bg {
+  background-image: url(./images/greyfade.jpg);
+  background-color: rgb(21 27 29);
+  background-size: 100% 100%;
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  border-radius: inherit
+}
+
+.hero-decoration-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+}
+  .hero-decoration {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgb(0 0 0 / 38%);
+    position: absolute;
+    transform: skewY(
+  -45deg) translateX(0);
+  }
+
+video {
+  width: 100%;
+  height: 286px;
+}
+
+/* hero abilities */
+.hero-abilities {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 20px;
+}
+
+.hero-abilities img {
+  border-radius: 10px;
+  display: inlin-block;
+  margin: 5px 0;
+  width: 54px;
+  cursor: pointer;
+  height: 54px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
+}
+
+.hero-abilities img:not(:first-child) {
+  background-image: url(./images/Dota2Logo.svg);
+  background-size: contain;
+}
+
+.hero-abilities img:hover {
+  opacity: .8;
+  cursor: pointer;
+}
+
+/* hero name */
+.hero-name {
+  color: rgba(255, 255, 255, .9);
+  padding-bottom: 5px;
+}
+
+/* attack type */
+.hero-attack_type {
+  border-radius: 100%;
+  width: 45px;
+  height: 45px;
+  z-index: 3;
+  position: absolute;
+  background-color: gray;
+  box-shadow: 0px 0px 8px #000;
+  top: -10px;
+  right: -10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.hero-attack_type img {
+  width: 22px;
+  height: 22px;
+}
+
+/* primary attr */
+.hero-primary_attr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+  border-radius: 100%;
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  box-shadow: 0px 0px 8px #000;
+}
+
+
+.card-main {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: calc(100% - 40px);
+  height: calc(100% - 40px);
+  padding: 20px;
+}
+
+.card-main-right {
+  display: flex;
+  flex-direction: column;
+}
+
+/* hero roles */
+.hero-roles {
+  color: rgb(255 255 255 / 70%);
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+/* hero mp hp */
+.hero-mp-hp {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.hero-mp-hp span {
+  width: 100%;
+  height: 20px;
+  color: rgb(255 255 255 / 90%);
+  font-size: 12px;
+  text-align: center;
+  display: block;
+  line-height: 20px;
+}
+
+.hero-mp-hp .hero-hp {
+  box-shadow: 0px -10px 20px #000;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  margin-bottom: 1px ;
+  background: linear-gradient(to right, rgb(40 99 35), rgb(122 240 60));
+}
+.hero-mp-hp .hero-mp {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background: linear-gradient(to right, rgb(16 86 219), rgb(115 245 254));
+}
+
+.hero-info {
+  color: rgb(255 255 255 / 90%);
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.hero-info h2 {
+  font-size: 14px;
+  margin: 0 0 5px;
+  padding: 0;
+}
+
+.hero-info div {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-info span {
+  margin-bottom: 5px;
+  background-repeat: no-repeat;
+  background-position: 0 center;
+  padding-left: 30px;
+  display: inline-block;
+  height: 24px;
+  line-height: 24px;
+  background-size: 24px 24px;
+}
+
+.hero-info .hero-base_attack {
+  background-image: url(./images/icon_damage.png);
+}
+
+.hero-info .hero-attack_rate {
+  background-image: url(./images/icon_attack_time.png);
+}
+
+.hero-info .hero-attack_range {
+  background-image: url(./images/icon_attack_range.png)
+}
+
+.hero-info .hero-projectile_speed {
+  background-image: url(./images/icon_projectile_speed.png)
+}
+
+.hero-info .hero-armor {
+  background-image: url(./images/icon_armor.png)
+}
+
+.hero-info .hero-magic_resist {
+  background-image: url(./images/icon_magic_resist.png)
+}
+
+.hero-info .hero-movement_speed {
+  background-image: url(./images/icon_movement_speed.png)
+}
+
+.hero-info .hero-turn_rate {
+  background-image: url(./images/icon_turn_rate.png)
+}
+
+
+/* hero base */
+.hero-base {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  position: absolute;
+  left: 4px;
+  top: 7px;
+  color: rgb(255 255 255 / 90%);
+}
+
+.hero-base div {
+  font-size: 16px;
+  margin-right: 10px;
+  font-weight: bold;
+  padding-left: 30px;
+  background-repeat: no-repeat;
+  background-position: 0 center;
+  background-size: 24px 24px;
+}
+.hero-base span {
+  font-size: 13px;
+  font-weight: normal;
+  color: rgb(255 255 255 / 60%);
+}
+
+.hero-base-str-gain {
+  background-image: url(./images/hero_strength.png)
+}
+
+.hero-base-str-gain.primary-attr {
+  font-size: 18px;
+  color: #ec3d05;
+}
+
+.hero-base-str-gain.primary-attr span {
+  color: #ec3d05;
+}
+
+
+.hero-base-int-gain {
+  background-image: url(./images/hero_intelligence.png)
+}
+
+.hero-base-int-gain.primary-attr {
+  font-size: 18px;
+  color: #20b5c7;
+}
+
+.hero-base-int-gain.primary-attr span {
+  color: #20b5c7;
+}
+
+.hero-base-agi-gain {
+  background-image: url(./images/hero_agility.png)
+}
+
+.hero-base-agi-gain.primary-attr {
+  font-size: 18px;
+  color: #44e030;
+}
+
+.hero-base-agi-gain.primary-attr span {
+  color: #44e030;
+}
+
+.tooltip {
+  border: 2px solid rgb(0, 0, 0);
+  padding: 10px;
+  position: absolute;
+  z-index: 999;
+  background-image: url(./images/greyfade.jpg);
+  background-color: rgb(21 27 29);
+}
+/* talent modal */
+.talent-tooltip {
+  width: 472px;
+  height: 224px;
+  display: none;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 12px;
+}
+
+.talent-tooltip .talent-bg-img {
+  background: url(./images/talent_tree.svg) no-repeat 50% 50%;
+  position: absolute;
+  width: 227px;
+  height: 95%;
+  left: 50%;
+  margin-left: -113px;
+  opacity: .2;
+}
+
+.talent-row {
+  text-align: center;
+  width: 50%;
+  background: rgb(0 0 0 / 40%);
+  height: 35px;
+  line-height: 35px;
+  color: rgba(255, 255, 255, .8);
+  position: relative;
+}
+
+.talent-row:nth-child(2n):after {
+  position: absolute;
+  border-radius: 100%;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  line-height: 35px;
+  display: block;
+  content: "25";
+  z-index: 2;
+  top: 0;
+  background: rgb(0 0 0);
+  left: 92%;
+  font-weight: 700;
+  color: rgb(201 175 29);
+  box-shadow: 0 0 15px 2px rgb(201 175 29 / 40%);
+}
+
+.talent-row.item4:nth-child(2n):after {
+  content: "25";
+}
+
+.talent-row.item3:nth-child(2n):after {
+  content: "20";
+}
+
+.talent-row.item2:nth-child(2n):after {
+  content: "15";
+}
+
+.talent-row.item1:nth-child(2n):after {
+  content: "10";
+}
+
+/* abilitiy tooltip */
+.ability-tooltip {
+  width: 300px;
+  display: none;
+  color: rgba(255, 255, 255, .9);
+  font-size: 12px;
+}
+.item-main {
+  display: flex;
+  align-items: center;
+  margin: -10px -10px 10px;
+  padding: 10px;
+  background: #2a363c;
+}
+
+  .item-main img {
+    width: 50px;
+    height: 50px;
+    background-image: url(./images/Dota2Logo.svg);
+    background-size: contain;
+  }
+
+.box {
+  border-bottom: 1px solid #2a363c;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.item-main .item-main-right {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.item-main .item-main-right h3 {
+  font-size: 16px;
+  width: 220px;
+  font-weight: 700;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: rgba(255, 255, 255, .9);
+  margin-bottom: 5px;
+}
+
+.item-row {
+  padding-bottom: 5px;
+}
+
+.item-row:last-child {
+  padding-bottom: 0;
+}
+
+.item-sub {
+  color: rgba(255, 255, 255, .9);
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.item-sub label {
+  font-weight: 400;
+  color: rgb(184 182 180);
+  display: inline-block;
+  padding-right: 5px;
+}
+
+.item-desc {
+  font-size: 13px;
+  white-space: break-spaces;
+  line-height: 18px;
+}
+
+.red-txt {
+  color: #ec3d05;
+}
+
+.green-txt {
+  color: #44e030;
+}
+
+.blue-txt {
+  color: #20b5c7;
+}
+
+.item-mc-cd {
+  display: flex;
+  justify-content: space-between;
+}
+
+  .item-mc-cd .item-mc,
+  .item-mc-cd .item-cd {
+    display: flex;
+    align-items: center;
+    padding-right: 7px;
+  }
+
+  .item-mc-cd img {
+    display: inline-block;
+    margin-right: 7px;
+    border-radius: 3px;
+  }
+
+  .item-mc-cd .item-value {
+    display: inline-block;
+    padding: 0 1px;
+  }
+
+.mana-icon {
+  margin-right: 7px;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  background: linear-gradient(rgb(0 164 219), rgb(0 113 150));
+}

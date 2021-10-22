@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="favicon.ico">
+  <title>Dota hero card</title>
+  <link href="./style.css" rel="stylesheet"></link>
+</head>
+<body>
+
+  <p>Information from: https://www.dota2.com/hero/magnus</p>
+  <h1>为什么不Ban猛犸</h1>
+
+  
+  <div class="hero-card">
+    <div class="hero-card-back">
+      <img src="./images/Dota2Logo.svg"/>
+    </div>
+    <div class="hero-card-front">
+      
+      <span class="hero-bg"></span>
+      <div class="hero-decoration-container">
+        <span class="hero-decoration"></span>
+      </div>
+      <!-- <div class="hero-attack_type"></div> -->
+      <!-- <div class="hero-primary_attr"></div> -->
+      <div class="hero-base"></div>
+      <!-- card main content -->
+      <div class="card-main">
+        <div class="hero-abilities">
+          <img loading="lazy" class="hero-talent" src="./images/talent_tree.svg" alt="Dota2 img">
+        </div>
+        <div class="card-main-right">
+          <video class="hero-video"
+            poster="./images/Dota2Logo.svg"
+            autoplay="" preload="auto" loop="" playsinline="">
+          </video>
+          <div class="hero-mp-hp"></div>
+          <h1 class="hero-name"></h1>
+          <div class="hero-roles"></div>
+          <div class="hero-info">
+            <div class="hero-attack">
+              <h2>ATTACK</h2>
+            </div>
+            <div class="hero-defense">
+              <h2>DEFENSE</h2>
+              </div>
+            <div class="hero-mobility">
+              <h2>MOBILITY</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  <div class="tooltip talent-tooltip">
+    <span class="talent-bg-img"></span>
+  </div>
+  
+  <div class="tooltip ability-tooltip">
+  </div>
+  
+</body>
+<script src="./script.js" type="text/javascript"></script>
+</html>
