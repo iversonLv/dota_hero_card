@@ -9,7 +9,7 @@
   <link href="./style.css" rel="stylesheet"></link>
 </head>
 <body>
-  <h1 class="title">为什么不Ban猛犸</h1>
+  <h1 class="title">Welcome to Dota Hero Cards</h1>
 
   
   <div class="hero-card">
@@ -27,8 +27,9 @@
       <div class="hero-base"></div>
       <!-- card main content -->
       <div class="card-main">
-        <div class="hero-abilities">
-          <img loading="lazy" class="hero-talent" src="./images/talent_tree.svg" alt="Dota2 img">
+        <div class="hero-abilities-talent">
+          <img class="hero-talent" src="./images/talent_tree.svg" alt="Dota2 img">
+          <div class="hero-abilities-list"></div>
         </div>
         <div class="card-main-right">
           <video class="hero-video"
@@ -55,6 +56,19 @@
   </div>
 
 
+  <ul style="color: white">
+    <li class="complexity" data-complexity-value="1" data-selected=false>1</li>
+    <li class="complexity" data-complexity-value="2" data-selected=false>2</li>
+    <li class="complexity" data-complexity-value="3" data-selected=false>3</li>
+  </ul>
+  <ul style="color: white">
+    <li class="attackType" data-attacktype-value="Melee">Melee</li>
+    <li class="attackType" data-attacktype-value="Ranged">Ranged</li>
+  </ul>
+  <div class="hero-list">
+    
+  </div>
+
     
   <div class="tooltip talent-tooltip">
     <span class="talent-bg-img"></span>
@@ -62,7 +76,12 @@
   
   <div class="tooltip ability-tooltip">
   </div>
+
+  <div class="tooltip-alt scepter-shard-tooltip">
+    
+  </div>
   
 </body>
-<script src="./script.js" type="text/javascript"></script>
+<!-- <script type="module" src="./script.js"></script> -->
+<script type="module" src="./script_graphql.js"></script>
 </html>

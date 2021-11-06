@@ -1,0 +1,478 @@
+{
+  "data": {
+    "constants": {
+      "hero": {
+        "id": 1,
+        "name": "npc_dota_hero_antimage",
+        "displayName": "Anti-Mage",
+        "shortName": "antimage",
+        "aliases": [
+          "am"
+        ],
+        "gameVersionId": 148,
+        "language": {
+          "displayName": "敌法师",
+          "lore": "当山下的王国被潮水般的侵略者们横扫的时候，星隐寺的僧侣们只是在山上默默的注视着那崎岖的山谷。苦行且务实的他们在偏远高山的寺院里，独自沉浸在远离尘嚣的冥想中，不受任何魔法元素或者神眀的干扰。然后，死亡之神的军队来了，他们的任务是摧毁所有信仰，并让当地人转而信奉死亡之神的虚无主义。带着他们千年的战乱和血雨腥风，死亡军团将无数手下败将的灵魂和尸骨撕裂，用这种恐怖来摧毁星隐寺的信仰。面对此等攻击，寺院只坚持了不到两周，甚至还有一些刚从冥想中醒来的僧侣认为，这些入侵者不过是用来干扰他们冥想的邪恶幻象，于是他们死在了自己的冥想垫上。只有一个年轻人幸免于难，他是来星隐寺寻求智慧，却尚未被寺院接受的侍僧。他惊恐地看着自己曾经侍奉过的僧侣们被杀，然后又被复活成为死亡之神的祭司。带着星隐寺残存的珍贵教义卷轴，他艰难地到达了一个相对安全的地方，他发誓，不仅要消灭死亡之神的魔法师，更要将“魔法”这个词从世上抹去。",
+          "hype": "只要给了敌法师积累力量的机会，他的碾压将无法阻挡。进，他会<b>枯竭敌人的魔力</b>，退，他可<b>短距离传送</b>。想将他逼入困境绝非易事。"
+        },
+        "abilities": [
+          {
+            "slot": 1,
+            "gameVersionId": 148,
+            "abilityId": 5003,
+            "ability": {
+              "id": 5003,
+              "name": "antimage_mana_break",
+              "uri": "antimage",
+              "language": {
+                "displayName": "Mana Break",
+                "lore": "A modified technique of the Turstarkuri monks' peaceful ways is to turn magical energies on their owner.",
+                "aghanimDescription": null,
+                "shardDescription": null
+              },
+              "stat": {
+                "abilityId": 5003,
+                "type": 0,
+                "behavior": 2,
+                "unitTargetType": 0,
+                "unitTargetTeam": 0,
+                "unitTargetFlags": 0,
+                "unitDamageType": 1,
+                "spellImmunity": 4,
+                "modifierSupportValue": 1,
+                "modifierSupportBonus": 0,
+                "isOnCastbar": true,
+                "isOnLearnbar": true,
+                "fightRecapLevel": 0,
+                "isGrantedByScepter": false,
+                "hasScepterUpgrade": false,
+                "maxLevel": null,
+                "levelsBetweenUpgrades": 0,
+                "requiredLevel": 0,
+                "hotKeyOverride": null,
+                "displayAdditionalHeroes": false,
+                "isUltimate": false,
+                "duration": "",
+                "charges": "",
+                "chargeRestoreTime": "",
+                "isGrantedByShard": false,
+                "dispellable": "NONE"
+              },
+              "attributes": [
+                {
+                  "name": "illusion_percentage",
+                  "value": "50",
+                  "linkedSpecialBonusAbilityId": null,
+                  "requiresScepter": false
+                },
+                {
+                  "name": "mana_per_hit",
+                  "value": "28 40 52 64",
+                  "linkedSpecialBonusAbilityId": null,
+                  "requiresScepter": false
+                },
+                {
+                  "name": "mana_per_hit_pct",
+                  "value": "1 1.8 2.6 3.4",
+                  "linkedSpecialBonusAbilityId": 666,
+                  "requiresScepter": false
+                },
+                {
+                  "name": "percent_damage_per_burn",
+                  "value": "50",
+                  "linkedSpecialBonusAbilityId": null,
+                  "requiresScepter": false
+                },
+                {
+                  "name": "silence_chance",
+                  "value": "15",
+                  "linkedSpecialBonusAbilityId": null,
+                  "requiresScepter": false
+                },
+                {
+                  "name": "silence_duration",
+                  "value": "3",
+                  "linkedSpecialBonusAbilityId": null,
+                  "requiresScepter": false
+                }
+              ],
+              "isTalent": false
+            }
+          },
+          {
+            "slot": 2,
+            "gameVersionId": 148,
+            "abilityId": 5004,
+            "ability": {
+              "id": 5004,
+              "name": "antimage_blink",
+              "uri": "antimage",
+              "language": {
+                "displayName": "Blink",
+                "lore": "In his encounter with the Dead Gods, Anti-Mage learned the value of being elusive.",
+                "aghanimDescription": null,
+                "shardDescription": null
+              },
+              "stat": {
+                "abilityId": 5004,
+                "type": 0,
+                "behavior": 524304,
+                "unitTargetType": 0,
+                "unitTargetTeam": 0,
+                "unitTargetFlags": 0,
+                "unitDamageType": 0,
+                "spellImmunity": 0,
+                "modifierSupportValue": 1,
+                "modifierSupportBonus": 0,
+                "isOnCastbar": true,
+                "isOnLearnbar": true,
+                "fightRecapLevel": 0,
+                "isGrantedByScepter": false,
+                "hasScepterUpgrade": false,
+                "maxLevel": null,
+                "levelsBetweenUpgrades": 0,
+                "requiredLevel": 0,
+                "hotKeyOverride": null,
+                "displayAdditionalHeroes": false,
+                "isUltimate": false,
+                "duration": "",
+                "charges": "",
+                "chargeRestoreTime": "",
+                "isGrantedByShard": false,
+                "dispellable": "NONE"
+              },
+              "attributes": [
+                {
+                  "name": "blink_range",
+                  "value": "925 1000 1075 1150",
+                  "linkedSpecialBonusAbilityId": 6606,
+                  "requiresScepter": false
+                },
+                {
+                  "name": "min_blink_range",
+                  "value": "200",
+                  "linkedSpecialBonusAbilityId": null,
+                  "requiresScepter": false
+                }
+              ],
+              "isTalent": false
+            }
+          },
+          {
+            "slot": 3,
+            "gameVersionId": 148,
+            "abilityId": 7314,
+            "ability": {
+              "id": 7314,
+              "name": "antimage_counterspell",
+              "uri": "antimage",
+              "language": {
+                "displayName": "Counterspell",
+                "lore": "With the proper focus, Anti-Mage turns innate resistance into calculated retaliation.",
+                "aghanimDescription": null,
+                "shardDescription": "Counterspell passively grants a 900 radius aura that reduces enemy spell damage by 10%. Reduces spell damage by an additional 20% to enemies within 300 range"
+              },
+              "stat": {
+                "abilityId": 7314,
+                "type": 0,
+                "behavior": 2052,
+                "unitTargetType": 0,
+                "unitTargetTeam": 0,
+                "unitTargetFlags": 0,
+                "unitDamageType": 0,
+                "spellImmunity": 0,
+                "modifierSupportValue": 1,
+                "modifierSupportBonus": 0,
+                "isOnCastbar": true,
+                "isOnLearnbar": true,
+                "fightRecapLevel": 1,
+                "isGrantedByScepter": false,
+                "hasScepterUpgrade": false,
+                "maxLevel": null,
+                "levelsBetweenUpgrades": 0,
+                "requiredLevel": 0,
+                "hotKeyOverride": null,
+                "displayAdditionalHeroes": false,
+                "isUltimate": false,
+                "duration": "",
+                "charges": "",
+                "chargeRestoreTime": "",
+                "isGrantedByShard": false,
+                "dispellable": "YES"
+              },
+              "attributes": [
+                {
+                  "name": "duration",
+                  "value": "1.2",
+                  "linkedSpecialBonusAbilityId": null,
+                  "requiresScepter": false
+                },
+                {
+                  "name": "magic_resistance",
+                  "value": "15 25 35 45",
+                  "linkedSpecialBonusAbilityId": 6607,
+                  "requiresScepter": false
+                }
+              ],
+              "isTalent": false
+            }
+          },
+          {
+            "slot": 4,
+            "gameVersionId": 148,
+            "abilityId": 543,
+            "ability": {
+              "id": 543,
+              "name": "antimage_mana_overload",
+              "uri": "antimage",
+              "language": {
+                "displayName": "Blink Fragment",
+                "lore": null,
+                "aghanimDescription": null,
+                "shardDescription": null
+              },
+              "stat": {
+                "abilityId": 543,
+                "type": 0,
+                "behavior": 17179869209,
+                "unitTargetType": 19,
+                "unitTargetTeam": 2,
+                "unitTargetFlags": 0,
+                "unitDamageType": 0,
+                "spellImmunity": 4,
+                "modifierSupportValue": 1,
+                "modifierSupportBonus": 0,
+                "isOnCastbar": true,
+                "isOnLearnbar": true,
+                "fightRecapLevel": 1,
+                "isGrantedByScepter": true,
+                "hasScepterUpgrade": true,
+                "maxLevel": 1,
+                "levelsBetweenUpgrades": 0,
+                "requiredLevel": 0,
+                "hotKeyOverride": null,
+                "displayAdditionalHeroes": false,
+                "isUltimate": false,
+                "duration": "",
+                "charges": "3",
+                "chargeRestoreTime": "25",
+                "isGrantedByShard": false,
+                "dispellable": "NONE"
+              },
+              "attributes": [
+                {
+                  "name": "duration",
+                  "value": "7",
+                  "linkedSpecialBonusAbilityId": null,
+                  "requiresScepter": false
+                },
+                {
+                  "name": "incoming_damage",
+                  "value": "100",
+                  "linkedSpecialBonusAbilityId": null,
+                  "requiresScepter": false
+                },
+                {
+                  "name": "outgoing_damage",
+                  "value": "-25",
+                  "linkedSpecialBonusAbilityId": null,
+                  "requiresScepter": false
+                }
+              ],
+              "isTalent": false
+            }
+          },
+          {
+            "slot": 5,
+            "gameVersionId": 148,
+            "abilityId": 6251,
+            "ability": {
+              "id": 6251,
+              "name": "generic_hidden",
+              "uri": null,
+              "language": {
+                "displayName": "",
+                "lore": null,
+                "aghanimDescription": null,
+                "shardDescription": null
+              },
+              "stat": {
+                "abilityId": 6251,
+                "type": 0,
+                "behavior": 65,
+                "unitTargetType": 0,
+                "unitTargetTeam": 0,
+                "unitTargetFlags": 0,
+                "unitDamageType": 0,
+                "spellImmunity": 0,
+                "modifierSupportValue": 1,
+                "modifierSupportBonus": 0,
+                "isOnCastbar": true,
+                "isOnLearnbar": true,
+                "fightRecapLevel": 0,
+                "isGrantedByScepter": false,
+                "hasScepterUpgrade": false,
+                "maxLevel": 0,
+                "levelsBetweenUpgrades": 0,
+                "requiredLevel": 0,
+                "hotKeyOverride": null,
+                "displayAdditionalHeroes": false,
+                "isUltimate": false,
+                "duration": "",
+                "charges": "",
+                "chargeRestoreTime": "",
+                "isGrantedByShard": false,
+                "dispellable": "NONE"
+              },
+              "attributes": null,
+              "isTalent": false
+            }
+          },
+          {
+            "slot": 6,
+            "gameVersionId": 148,
+            "abilityId": 5006,
+            "ability": {
+              "id": 5006,
+              "name": "antimage_mana_void",
+              "uri": "antimage",
+              "language": {
+                "displayName": "Mana Void",
+                "lore": "After bringing enemies to their knees, Anti-Mage punishes them for their use of the arcane arts.",
+                "aghanimDescription": null,
+                "shardDescription": null
+              },
+              "stat": {
+                "abilityId": 5006,
+                "type": 1,
+                "behavior": 40,
+                "unitTargetType": 19,
+                "unitTargetTeam": 2,
+                "unitTargetFlags": 0,
+                "unitDamageType": 2,
+                "spellImmunity": 4,
+                "modifierSupportValue": 0,
+                "modifierSupportBonus": 0,
+                "isOnCastbar": true,
+                "isOnLearnbar": true,
+                "fightRecapLevel": 2,
+                "isGrantedByScepter": false,
+                "hasScepterUpgrade": true,
+                "maxLevel": null,
+                "levelsBetweenUpgrades": 0,
+                "requiredLevel": 0,
+                "hotKeyOverride": null,
+                "displayAdditionalHeroes": false,
+                "isUltimate": true,
+                "duration": "",
+                "charges": "",
+                "chargeRestoreTime": "",
+                "isGrantedByShard": false,
+                "dispellable": "NONE"
+              },
+              "attributes": [
+                {
+                  "name": "mana_void_aoe_radius",
+                  "value": "500",
+                  "linkedSpecialBonusAbilityId": null,
+                  "requiresScepter": false
+                },
+                {
+                  "name": "mana_void_damage_per_mana",
+                  "value": "0.8 0.95 1.1",
+                  "linkedSpecialBonusAbilityId": 665,
+                  "requiresScepter": false
+                },
+                {
+                  "name": "mana_void_ministun",
+                  "value": "0.3",
+                  "linkedSpecialBonusAbilityId": 735,
+                  "requiresScepter": false
+                }
+              ],
+              "isTalent": false
+            }
+          }
+        ],
+        "roles": [
+          {
+            "roleId": 0,
+            "level": 3
+          },
+          {
+            "roleId": 1,
+            "level": 3
+          },
+          {
+            "roleId": 2,
+            "level": 1
+          }
+        ],
+        "talents": [
+          {
+            "abilityId": 6250,
+            "slot": 0
+          },
+          {
+            "abilityId": 6012,
+            "slot": 1
+          },
+          {
+            "abilityId": 666,
+            "slot": 2
+          },
+          {
+            "abilityId": 735,
+            "slot": 3
+          },
+          {
+            "abilityId": 665,
+            "slot": 4
+          },
+          {
+            "abilityId": 6606,
+            "slot": 5
+          },
+          {
+            "abilityId": 6607,
+            "slot": 6
+          },
+          {
+            "abilityId": 6353,
+            "slot": 7
+          }
+        ],
+        "stats": {
+          "enabled": true,
+          "heroUnlockOrder": 1,
+          "team": true,
+          "cMEnabled": true,
+          "newPlayerEnabled": true,
+          "attackType": "Melee",
+          "startingArmor": 4,
+          "startingMagicArmor": 25,
+          "startingDamageMin": 53,
+          "startingDamageMax": 57,
+          "attackRate": 1.399999976158142,
+          "attackAnimationPoint": 0.30000001192092896,
+          "attackAcquisitionRange": 600,
+          "attackRange": 150,
+          "primaryAttribute": "agi",
+          "strengthBase": 23,
+          "strengthGain": 1.600000023841858,
+          "intelligenceBase": 12,
+          "intelligenceGain": 1.7999999523162842,
+          "agilityBase": 24,
+          "agilityGain": 2.799999952316284,
+          "mpRegen": 0,
+          "moveSpeed": 310,
+          "moveTurnRate": 0.6000000238418579,
+          "hpBarOffset": 0,
+          "visionDaytimeRange": 1800,
+          "visionNighttimeRange": 800,
+          "complexity": 1
+        }
+      }
+    }
+  }
+}
