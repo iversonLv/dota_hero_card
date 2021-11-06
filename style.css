@@ -719,3 +719,39 @@ video {
 .grey-out {
   filter: grayscale(100%);
 }
+
+.hero-filter-bar {
+  font-size: 14px;
+  color: rgba(255, 255, 255, .9);
+  display: flex;
+  border-radius: 5px;
+  border: 1px solid rgb(40 40 40);
+  box-shadow: 0px 0px 8px #000;
+  align-items: center;
+  padding: 5px 10px;
+  justify-content: center;
+  margin: 0 50px;
+}
+
+.hero-filter-bar label {
+  display: inline-block;
+  padding: 0 10px;
+}
+
+.hero-filter-complexity {
+  display: flex;
+  align-items: center;
+}
+
+.hero-filter-complexity .complexity {
+  background: url(./images/filter-diamond.png) no-repeat 0 0;
+  filter: brightness(0.5) saturate(0);
+  width: 43px;
+  height: 35px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.hero-filter-complexity .filter-actived {
+  filter: brightness(1) saturate(1);
+}

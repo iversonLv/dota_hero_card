@@ -861,24 +861,38 @@ const scepterShardTooltipTem = (ability, isScepterOrShard) => {
 }
 
 const complexityNode = document.getElementsByClassName('complexity')
-for (let complexity of complexityNode) {
+// conver the HTMLColletion to arry
+var complexities = Array.prototype.slice.call( complexityNode )
+complexities.forEach((complexity, index, arr)  => {
   complexity.addEventListener('click', (e) => {
-    if (e.target.getAttribute('data-selected') === 'true') {
-      e.target.setAttribute('data-selected', 'false')
-      for(let heroCard of heroCards) {
+    const st = e.target.getAttribute('data-selected')
+    console.log(complexity.getAttribute('data-selected'))
+    // reset all data-select, and reset all actived
+    arr.map(i => {
+      i.setAttribute('data-selected', 'false')
+      i.classList.remove('filter-actived')
+    })
+    // previous item will add actived class
+    const activeds = arr.slice(0, index + 1)
+    activeds.map(a => a.classList.add('filter-actived'))
+    e.target.setAttribute('data-selected', st === 'false' ? 'true' : 'false')
+
+    // after e.target is true, we wanna reset if click again
+    if (st === "true") {
+      arr.map(i => {
+        i.setAttribute('data-selected', 'false')
+        i.classList.remove('filter-actived')
+      })
+    }
+
+    // logic for filter heros
+    for(let heroCard of heroCards) {
+      if (heroCard.getAttribute('data-complexity-value') !== e.target.getAttribute('data-complexity-value') && st === 'false') {
+        heroCard.classList.add('grey-out')
+      } else {
         heroCard.classList.remove('grey-out')
-      }
-    } else if (e.target.getAttribute('data-selected') === 'false') {
-      complexity.setAttribute('data-selected', 'false')
-      e.target.setAttribute('data-selected', 'true')
-      for(let heroCard of heroCards) {
-        if (heroCard.getAttribute('data-complexity-value') !== e.target.getAttribute('data-complexity-value')) {
-          heroCard.classList.add('grey-out')
-        } else {
-          heroCard.classList.remove('grey-out')
-        }
       }
     }
     
   });
-}
+})
