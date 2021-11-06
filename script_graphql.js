@@ -141,6 +141,11 @@ const heroAttackRangeDom = document.createElement("span");
 heroAttackRangeDom.classList = ["hero-attack_range"]
 heroAttackNode.appendChild(heroAttackRangeDom)
 
+// hero card complexity bar
+const complexityListNode = document.createElement('div')
+complexityListNode.classList.add('complexity-list')
+heroCardFrontNode.appendChild(complexityListNode)
+
 // projectile_speed
 // const heroProjectileSpeedDom = document.createElement("span");
 // heroProjectileSpeedDom.classList = ["hero-projectile_speed"]
@@ -205,7 +210,7 @@ async function main() {
   rolesData = await getGraphqlData(rolesQuery())
   console.log(heroData.data.constants.hero, heroesData.data.constants.heroes, rolesData.data.constants.roles)
   const { shortName, abilities, talents, language, stats, roles } = heroData.data.constants.hero
-  const { attackType, primaryAttribute, startingMagicArmor, hpBarOffset, agilityBase, agilityGain, strengthBase, strengthGain, mpRegen, intelligenceBase, intelligenceGain, startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate } = stats;
+  const { attackType, primaryAttribute, startingMagicArmor, hpBarOffset, agilityBase, agilityGain, strengthBase, strengthGain, mpRegen, intelligenceBase, intelligenceGain, startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate, complexity } = stats;
 
   // after all data from api fetch, the card will load finish and rotate 180deg
   if (heroData && heroesData && rolesData) {
@@ -217,7 +222,7 @@ async function main() {
   }
 
   // first hero by default
-  updateHero(rolesData, shortName, language, roles, attackType, primaryAttribute, startingMagicArmor, hpBarOffset, agilityBase, agilityGain, strengthBase, strengthGain, mpRegen, intelligenceBase, intelligenceGain, startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate, abilities, talents)
+  updateHero(rolesData, shortName, language, roles, attackType, primaryAttribute, startingMagicArmor, hpBarOffset, agilityBase, agilityGain, strengthBase, strengthGain, mpRegen, intelligenceBase, intelligenceGain, startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate, abilities, talents, complexity)
   // list all heroes
 
   
@@ -248,8 +253,8 @@ async function main() {
       }
       // after click the image, we need to update the hero video base on its shortName
       const { shortName, abilities, talents, language, stats, roles } = heroData.data.constants.hero;
-      const { attackType, primaryAttribute, startingMagicArmor, hpBarOffset, agilityBase, agilityGain, strengthBase, strengthGain, mpRegen, intelligenceBase, intelligenceGain, startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate } = stats;
-      updateHero(rolesData, shortName, language, roles, attackType, primaryAttribute, startingMagicArmor, hpBarOffset, agilityBase, agilityGain, strengthBase, strengthGain, mpRegen, intelligenceBase, intelligenceGain, startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate, abilities, talents)
+      const { attackType, primaryAttribute, startingMagicArmor, hpBarOffset, agilityBase, agilityGain, strengthBase, strengthGain, mpRegen, intelligenceBase, intelligenceGain, startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate, complexity } = stats;
+      updateHero(rolesData, shortName, language, roles, attackType, primaryAttribute, startingMagicArmor, hpBarOffset, agilityBase, agilityGain, strengthBase, strengthGain, mpRegen, intelligenceBase, intelligenceGain, startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate, abilities, talents, complexity)
     })
   }
 
@@ -317,8 +322,9 @@ function filterHerosBasePrimaryAttr(heros, primaryAttribute) {
  * @param {Obj} rolesData - List all roles
  * @param {array} abilities - Hero abilities
  * @param {array} talents - Hero talents
+ * @param {number} complexity - Hero complexity: 1, 2, 3
  */
-function updateHero(rolesData, shortName, language, roles, attackType, primaryAttribute, startingMagicArmor, hpBarOffset, agilityBase, agilityGain, strengthBase, strengthGain, mpRegen, intelligenceBase, intelligenceGain, startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate, abilities, talents) {
+function updateHero(rolesData, shortName, language, roles, attackType, primaryAttribute, startingMagicArmor, hpBarOffset, agilityBase, agilityGain, strengthBase, strengthGain, mpRegen, intelligenceBase, intelligenceGain, startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate, abilities, talents, complexity) {
   setHeroVideo(shortName)
   setHeroName(language.displayName)
   setHeroAttackType(attackType)
@@ -331,6 +337,7 @@ function updateHero(rolesData, shortName, language, roles, attackType, primaryAt
   setHeroTalents(talents);
   setHeroAbilityHover(abilities)
   setHeroScepterShard(abilities)
+  setHeroComplexity(complexity)
 }
 
 // img tag fallbacka dota2 logo if on error
@@ -717,6 +724,18 @@ const abilityTooltipTem =  (abilityName, abilities) => {
   `
 }
 
+/**
+ * Set hero complexity
+ * @param {number} complexity - Hero complexity: 1, 2, 3
+ */
+function setHeroComplexity(complexity) {
+  complexityListNode.innerHTML = ''
+  for (let i = 1; i <= complexity; i++) {
+    const complexityImgDom = document.createElement('span')
+    complexityImgDom.classList.add('hero-complexity-num')
+    complexityListNode.appendChild(complexityImgDom)
+  }
+}
 
 function setHeroScepterShard(abilities) {
   heroScepterShardTooltipNode.innerHTML = '';

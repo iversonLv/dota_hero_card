@@ -718,6 +718,7 @@ video {
 
 .grey-out {
   filter: grayscale(100%);
+  opacity: .2;
 }
 
 .hero-filter-bar {
@@ -754,4 +755,23 @@ video {
 
 .hero-filter-complexity .filter-actived {
   filter: brightness(1) saturate(1);
+}
+
+
+.complexity-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 9px;
+  right: 43px;
+}
+
+.hero-complexity-num {
+  filter: brightness(1) saturate(1);
+  background: url(./images/filter-diamond.png) no-repeat 0 0;
+  background-size: contain;
+  width: 21.5px;
+  height: 17.5px;
+  display: block;
 }
