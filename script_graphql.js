@@ -1,7 +1,7 @@
 import { heroQuery } from './query/hero.js';
 import { heroesQuery } from './query/heroes.js';
 import { rolesQuery } from './query/roles.js';
-import { heroTalentQuery } from './query/heroTalent.js';
+import { abilitiesQuery } from './query/abilities.js';
 
 // constatnt
 const VIDEO_URL = "https://cdn.cloudflare.steamstatic.com/apps/dota2/videos/dota_react/heroes/renders/"
@@ -60,6 +60,7 @@ let heroData;
 let heroTalentsData;
 let heroesData;
 let rolesData;
+let abilitiesData;
 
 // get DOM element node
 const heroCardNode = document.getElementsByClassName("hero-card")[0]
@@ -208,7 +209,8 @@ async function main() {
   heroData = await getGraphqlData(heroQuery(heroId))
   heroesData = await getGraphqlData(heroesQuery())
   rolesData = await getGraphqlData(rolesQuery())
-  console.log(heroData.data.constants.hero, heroesData.data.constants.heroes, rolesData.data.constants.roles)
+  abilitiesData = await getGraphqlData(abilitiesQuery())
+  console.log(heroData.data.constants.hero, heroesData.data.constants.heroes, rolesData.data.constants.roles, abilitiesData.data.constants.abilities)
   const { shortName, abilities, talents, language, stats, roles } = heroData.data.constants.hero
   const { attackType, primaryAttribute, startingMagicArmor, hpBarOffset, agilityBase, agilityGain, strengthBase, strengthGain, mpRegen, intelligenceBase, intelligenceGain, startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate, complexity } = stats;
 
@@ -334,7 +336,7 @@ function updateHero(rolesData, shortName, language, roles, attackType, primaryAt
   setHeroHPMP(hpBarOffset, strengthBase, mpRegen, intelligenceBase)
   setHeroBasic(startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, startingMagicArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate)
   setHeroAbilities(abilities);
-  setHeroTalents(talents);
+  setHeroTalents(talents, abilitiesData.data.constants.abilities);
   setHeroAbilityHover(abilities)
   setHeroScepterShard(abilities)
   setHeroComplexity(complexity)
@@ -532,18 +534,24 @@ function setHeroAbilities(abilities) {
   }
 }
 
-async function setHeroTalents(talents) {
+/**
+ * Set Hero talents via mapping its abilityId with abilities
+ * @param {array} talents - Hero talents
+ * @param {array} abilitiesData - All abilities
+ */
+function setHeroTalents(talents, abilitiesData) {
   heroTalentTooltipNode.innerHTML = '';
-  console.log(`loading talents`)
-  // heroTalentsData = await getGraphqlData(heroTalentQuery())
+  console.log(abilitiesData)
   // talents
   talents = talents.reverse();
   // append hero talent
   for (let talent of talents) {
     const heroTalentsDom = document.createElement('span');
     heroTalentTooltipNode.appendChild(heroTalentsDom);
-    const heroTalentData = await getGraphqlData(heroTalentQuery(talent["abilityId"]))
-    heroTalentsDom.innerHTML = heroTalentData.data.constants.ability.language.displayName ?? 'loading';
+    const heroTalentData = abilitiesData.find(ability => ability['id'] === talent['abilityId'])
+    console.log(talent, heroTalentData)
+    
+    heroTalentsDom.innerHTML = heroTalentData.language.displayName ?? 'loading';
     heroTalentsDom.classList = [`talent-rows item${talent["slot"]}`]
   }
 
