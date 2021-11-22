@@ -198,7 +198,7 @@ const getGraphqlData = async(query) => {
       body: query,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${STRATZ_API_TOKEN}`
+        'Authorization': `Bearer ${process.env.STRATZ_API_TOKEN}`
       }
     }
   );
