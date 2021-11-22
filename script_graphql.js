@@ -3,6 +3,8 @@ import { heroesQuery } from './query/heroes.js';
 import { rolesQuery } from './query/roles.js';
 import { abilitiesQuery } from './query/abilities.js';
 
+import { STRATZ_API_TOKEN } from './config.js';
+
 // constatnt
 const VIDEO_URL = "https://cdn.cloudflare.steamstatic.com/apps/dota2/videos/dota_react/heroes/renders/"
 const ICON_URL = "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/icons/"
@@ -198,7 +200,7 @@ const getGraphqlData = async(query) => {
       body: query,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.STRATZ_API_TOKEN}`
+        'Authorization': `Bearer ${STRATZ_API_TOKEN}`
       }
     }
   );
