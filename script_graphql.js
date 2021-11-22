@@ -197,7 +197,8 @@ const getGraphqlData = async(query) => {
       method: 'post',
       body: query,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${STRATZ_API_TOKEN}`
       }
     }
   );
@@ -358,7 +359,7 @@ for (let i of imgs) {
   heroVideoNodeFallbackImgNode.setAttribute("src", VIDEO_URL + shortName + ".png");
 
   heroVideoSourceNode.setAttribute("src", VIDEO_URL + shortName + ".webm");
-  heroVideoNode.autoplay = true  
+  heroVideoSourceNode.setAttribute("type", "video/webm");
 }
 
 /**
