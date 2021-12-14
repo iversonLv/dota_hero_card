@@ -8,6 +8,16 @@
   outline: none;
   background-image: url(./images/greyfade.jpg);
   background-size: cover;
+
+  --gold: gold;
+  --str-color: #ec3d05;
+  --agi-color: #44e030;
+  --int-color: #20b5c7;
+  --light-white: rgba(255,255,255,.9);
+  --basic-shadow-8: 0 0 8px var(--black);
+  --basic-shadow-3: 0 0 3px var(--black);
+  --unit: 5px;
+  --black: #000;
 }
 * {
   margin: 0;
@@ -31,8 +41,8 @@ h1 {
   width: 400px;
   height: 600px;
   margin: 100px auto;
-  border: 1px solid rgb(40 40 40);
-  box-shadow: 0px 0px 8px #000;
+  border: 1px solid rgb(40,40,40);
+  box-shadow: var(--basic-shadow-8);
 }
 
 .hero-card-front {
@@ -50,7 +60,7 @@ h1 {
   backface-visibility: hidden;
   border-radius: inherit;
   background-image: url(./images/greyfade.jpg);
-  background-color: rgb(21 27 29);
+  background-color: var(--dark-surface);
   background-size: 100% 100%;
   position: absolute;
   left: 0;
@@ -68,7 +78,7 @@ h1 {
 
 .hero-bg {
   background-image: url(./images/greyfade.jpg);
-  background-color: rgb(21 27 29);
+  background-color: var(--dark-surface);
   background-size: 100% 100%;
   width: 100%;
   height: 100%;
@@ -95,7 +105,7 @@ h1 {
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rgb(0 0 0 / 38%);
+    background-color: rgba(0,0,0,0.38);
     position: absolute;
     transform: skewY(
   -45deg) translateX(0);
@@ -129,11 +139,11 @@ video {
   cursor: pointer;
   width: 54px;
   height: 54px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
+  box-shadow: var(--basic-shadow-3);
 }
 
 .hero-abilities-talent img.hero-ability-isUltimate {
-  border: 2px solid gold;
+  border: 2px solid var(--gold);
   width: 50px;
   height: 50px;
 }
@@ -150,7 +160,7 @@ video {
 
 /* hero name */
 .hero-name {
-  color: rgba(255, 255, 255, .9);
+  color: var(--light-white);
 }
 
 /* attack type */
@@ -161,7 +171,7 @@ video {
   z-index: 3;
   position: absolute;
   background-color: gray;
-  box-shadow: 0px 0px 8px #000;
+  box-shadow: var(--basic-shadow-8);
   top: -10px;
   right: -10px;
   display: flex;
@@ -186,7 +196,7 @@ video {
   width: 40px;
   height: 40px;
   background-color: white;
-  box-shadow: 0px 0px 8px #000;
+  box-shadow: var(--basic-shadow-8);
 }
 
 
@@ -219,7 +229,7 @@ video {
 .hero-mp-hp span {
   width: 100%;
   height: 20px;
-  color: rgb(255 255 255 / 90%);
+  color: var(--light-white);
   font-size: 12px;
   text-align: center;
   display: block;
@@ -227,7 +237,7 @@ video {
 }
 
 .hero-mp-hp .hero-hp {
-  box-shadow: 0px -10px 20px #000;
+  box-shadow: 0px -10px 20px var(--black);;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   margin-bottom: 1px ;
@@ -240,7 +250,7 @@ video {
 }
 
 .hero-info {
-  color: rgb(255 255 255 / 90%);
+  color: var(--light-white);
   font-size: 13px;
   display: flex;
   justify-content: space-between;
@@ -317,7 +327,7 @@ video {
   position: absolute;
   left: 4px;
   top: 7px;
-  color: rgb(255 255 255 / 90%);
+  color: var(--light-white);
 }
 
 .hero-base div {
@@ -341,11 +351,11 @@ video {
 
 .hero-base-str-gain.primary-attr {
   font-size: 18px;
-  color: #ec3d05;
+  color: var(--str-color);
 }
 
 .hero-base-str-gain.primary-attr span {
-  color: #ec3d05;
+  color: var(--str-color);
 }
 
 
@@ -355,11 +365,11 @@ video {
 
 .hero-base-int-gain.primary-attr {
   font-size: 18px;
-  color: #20b5c7;
+  color: var(--int-color);
 }
 
 .hero-base-int-gain.primary-attr span {
-  color: #20b5c7;
+  color: var(--int-color);
 }
 
 .hero-base-agi-gain {
@@ -368,12 +378,14 @@ video {
 
 .hero-base-agi-gain.primary-attr {
   font-size: 18px;
-  color: #44e030;
+  color: var(--agi-color);
 }
 
 .hero-base-agi-gain.primary-attr span {
-  color: #44e030;
+  color: var(--agi-color);
 }
+
+/* Part3 hero modal */
 
 .tooltip {
   border: 2px solid rgb(0, 0, 0);
@@ -381,8 +393,8 @@ video {
   position: absolute;
   z-index: 999;
   background-image: url(./images/greyfade.jpg);
-  background-color: rgb(21 27 29);
-  box-shadow: 0 0 8px #000;
+  background-color: var(--dark-surface);
+  box-shadow: var(--basic-shadow-8);
 }
 /* talent modal */
 .talent-tooltip {
@@ -411,7 +423,7 @@ video {
   background: rgb(0 0 0 / 40%);
   height: 35px;
   line-height: 35px;
-  color: rgba(255, 255, 255, .8);
+  color: var(--light-white);
   position: relative;
 }
 
@@ -470,7 +482,7 @@ video {
 .ability-tooltip {
   width: 300px;
   display: none;
-  color: rgba(255, 255, 255, .9);
+  color: var(--light-white);
   font-size: 12px;
 }
 .item-main {
@@ -484,8 +496,9 @@ video {
   .item-main img {
     width: 50px;
     height: 50px;
-    background-image: url(./images/Dota2Logo.svg);
+    box-shadow: var(--basic-shadow-3);
     background-size: contain;
+    background-image: url(./images/Dota2Logo.svg);
   }
 
 .box {
@@ -507,7 +520,7 @@ video {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  color: rgba(255, 255, 255, .9);
+  color: var(--light-white);
   margin-bottom: 5px;
 }
 
@@ -520,14 +533,14 @@ video {
 }
 
 .item-sub {
-  color: rgba(255, 255, 255, .9);
+  color: var(--light-white);
   font-weight: 700;
   font-size: 12px;
 }
 
 .item-sub label {
   font-weight: 400;
-  color: rgb(184 182 180);
+  color: rgb(184,182,180);
   display: inline-block;
   padding-right: 5px;
 }
@@ -539,15 +552,15 @@ video {
 }
 
 .red-txt {
-  color: #ec3d05;
+  color: var(--str-color);
 }
 
 .green-txt {
-  color: #44e030;
+  color: var(--agi-color);
 }
 
 .blue-txt {
-  color: #20b5c7;
+  color: var(--int-color);
 }
 
 .item-mc-cd {
@@ -579,7 +592,7 @@ video {
   width: 16px;
   height: 16px;
   border-radius: 3px;
-  background: linear-gradient(rgb(0 164 219), rgb(0 113 150));
+  background: linear-gradient(rgb(0,164,219), rgb(0,113,150));
 }
 
 
@@ -597,6 +610,7 @@ video {
 
 .heroes-card:hover {
   transform: scale(1.5);
+  box-shadow: var(--basic-shadow-8);
 }
 
 
@@ -610,7 +624,7 @@ video {
   flex-direction: column;
   align-items: center;
   display: none;
-  color: rgb(255 255 255 / 90%);
+  color: var(--light-white);
   font-size: 12px;
 }
 
@@ -627,13 +641,14 @@ video {
   padding: 10px;
   background-image: url(./images/greyfade.jpg);
   background-color: rgb(21 27 29);
-  box-shadow: 0 0 8px #000;
+  box-shadow: var(--basic-shadow-8);
 
 }
 
-.item-main img{
+.tooltip-alt .item-main img{
   background: none;
   width: 12%;
+  box-shadow: none;
   height: auto;
 }
 
@@ -649,7 +664,7 @@ video {
 .item-detail-right h3 {
   font-size: 14px;
   font-weight: 700;
-  color: rgba(255, 255, 255, .9);
+  color: var(--light-white);
   display: flex;
   align-items: center;
   padding-bottom: 5px;
@@ -680,13 +695,15 @@ video {
   margin: 5px 0;
   width: 40px;
   height: 40px;
-  box-shadow: 0px 0px 3px rgba(0, 0, 0, 1);
+  background-size: contain;
+  background-image: url(./images/Dota2Logo.svg);
+  box-shadow: var(--basic-shadow-3);
 }
 
 .no-detail {
   font-size: 14px;
   font-weight: 700;
-  color: rgba(255, 255, 255, .9);
+  color: var(--light-white);
   display: flex;
   align-items: center;
 }
@@ -704,7 +721,7 @@ video {
   font-size: 14px;
   margin: 0 0 5px;
   padding: 0;
-  color: rgba(255, 255, 255, .9);
+  color: var(--light-white);
   display: flex;
   align-items: center;
   margin: 15px 0;
@@ -723,11 +740,11 @@ video {
 
 .hero-filter-bar {
   font-size: 14px;
-  color: rgba(255, 255, 255, .9);
+  color: var(--light-white);
   display: flex;
   border-radius: 5px;
   border: 1px solid rgb(40 40 40);
-  box-shadow: 0px 0px 8px #000;
+  box-shadow: var(--basic-shadow-8);
   align-items: center;
   padding: 5px 10px;
   justify-content: center;
@@ -774,4 +791,10 @@ video {
   width: 21.5px;
   height: 17.5px;
   display: block;
+}
+
+.basic-shadow-img {
+  box-shadow: var(--basic-shadow-3);
+  background-size: contain;
+  background-image: url(./images/Dota2Logo.svg);
 }
