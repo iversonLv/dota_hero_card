@@ -3,68 +3,26 @@ import { heroesQuery } from './query/heroes.js';
 import { rolesQuery } from './query/roles.js';
 import { abilitiesQuery } from './query/abilities.js';
 
-import { STRATZ_API_TOKEN } from './config.js';
+// config
+import {VIDEO_URL, STRATZ_HERO_URL, STRATZ_ABLITY_URL } from './config.js';
+
+// utils
+import { formatText, getGraphqlData } from './utiles.js';
 
 // constatnt
-const VIDEO_URL = "https://cdn.cloudflare.steamstatic.com/apps/dota2/videos/dota_react/heroes/renders/"
-const ICON_URL = "https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/icons/"
-const IMG_ONERROR = "./images/Dota2Logo.svg"
-const STRATZ_HERO_URL = 'https://cdn.stratz.com/images/dota2/heroes'
-const STRATZ_ABLITY_URL = 'https://cdn.stratz.com/images/dota2/abilities'
-
-const HP_UNIT = 20;
-const BASE_HEALTH = 200;
-const BONUS_HEALTH_REGENERATION = 0.1;
-const BASE_MANA = 75;
-const MP_UNIT = 12;
-const BONUS_MANA_REGENERATION = 0.05;
-
-const primaryAttrList = {
-  "str": "hero_strength",
-  "int": "hero_intelligence",
-  "agi": "hero_agility"
-}
-
-const DAMAGE_TYPES = {
-  0: 'DAMAGE_TYPE_NONE',
-  1: 'DAMAGE_TYPE_PHYSICAL',
-  2: 'DAMAGE_TYPE_MAGICAL',
-  4: 'DAMAGE_TYPE_PURE',
-  7: 'DAMAGE_TYPE_ALL',
-  8: 'DAMAGE_TYPE_HP_REMOVAL',
-}
-
-const spellImmunityList = {
-  1: 'Yes',
-  3: 'Yes',
-  4: 'No'
-}
-
-const behaviorAbilityList = {
-  4: 'No Target',
-  24: 'Unit Target'
-}
-
-const  DOTA_UNIT_TARGET_TEAM = {
-  0: 'DOTA_UNIT_TARGET_TEAM_NONE',
-  1: 'DOTA_UNIT_TARGET_TEAM_FRIENDLY',
-  2: 'DOTA_UNIT_TARGET_TEAM_ENEMY',
-  3: 'DOTA_UNIT_TARGET_TEAM_BOTH',
-  4: 'DOTA_UNIT_TARGET_TEAM_CUSTOM'
-}
-
-const formatText = (string, splitChart, slicePlacement) => {
-  return string.split(splitChart).slice(slicePlacement)
-}
+import { IMG_ONERROR, HP_UNIT, BASE_HEALTH, BONUS_HEALTH_REGENERATION, BASE_MANA, MP_UNIT, BONUS_MANA_REGENERATION, PRIMARY_ATTR_LIST, DAMAGE_TYPES, SPELL_IMMUNITY_LIST, DOTA_UNIT_TARGET_TEAM } from './constants.js';
 
 let heroId = 1
 let heroData;
-let heroTalentsData;
 let heroesData;
 let rolesData;
 let abilitiesData;
 
 // get DOM element node
+// hero list
+const heroListNode = document.getElementsByClassName('hero-list')[0]
+const heroCards = document.getElementsByClassName('heroes-card')
+
 const heroCardNode = document.getElementsByClassName("hero-card")[0]
 const heroCardFrontNode = heroCardNode.getElementsByClassName("hero-card-front")[0]
 const heroAbilitiesTalentNode = heroCardNode.getElementsByClassName("hero-abilities-talent")[0]
@@ -72,20 +30,9 @@ const heroAbilitiesListNode = heroCardFrontNode.getElementsByClassName("hero-abi
 const heroVideoNode = heroCardFrontNode.getElementsByClassName("hero-video")[0]
 const heroMpHpNode = heroCardFrontNode.getElementsByClassName("hero-mp-hp")[0]
 const heroTalentNode = heroCardFrontNode.getElementsByClassName("hero-talent")[0]
-const heroListNode = document.getElementsByClassName('hero-list')[0]
-const heroCards = document.getElementsByClassName('heroes-card')
+
 // for base str, agi, int
 const heroBaseNode = heroCardFrontNode.getElementsByClassName("hero-base")[0]
-
-// modal
-const heroTalentTooltipNode = document.getElementsByClassName("talent-tooltip")[0]
-const heroAbilityTooltipNode = document.getElementsByClassName("ability-tooltip")[0]
-const heroScepterShardTooltipNode = document.getElementsByClassName('scepter-shard-tooltip')[0]
-
-// default let's hide it
-heroTalentTooltipNode.style.display = 'none'
-heroAbilityTooltipNode.style.display = "none";
-heroScepterShardTooltipNode.style.display = "none";
 
 // hero basie: attack, defense, mobility
 const heroAttackNode = heroCardFrontNode.getElementsByClassName("hero-attack")[0]
@@ -149,11 +96,6 @@ const complexityListNode = document.createElement('div')
 complexityListNode.classList.add('complexity-list')
 heroCardFrontNode.appendChild(complexityListNode)
 
-// projectile_speed
-// const heroProjectileSpeedDom = document.createElement("span");
-// heroProjectileSpeedDom.classList = ["hero-projectile_speed"]
-// heroAttackNode.appendChild(heroProjectileSpeedDom)
-
 // turn rate
 const heroTrunRateDom = document.createElement("span");
 heroTrunRateDom.classList = ["hero-turn_rate"];
@@ -180,86 +122,52 @@ heroScepterShardNode.setAttribute('src', './images/aghs_scepter.png')
 heroScepterShardNode.setAttribute('alt', 'Dota2 Scepter Shard icon')
 heroAbilitiesTalentNode.append(heroScepterShardNode)
 
-//const heroScepterShardNode = heroCardFrontNode.getElementsByClassName("hero-scepter-shard")[0]
-
 // hero magic armor
 const heroMagicResistDom = document.createElement("span");
 heroMagicResistDom.classList = ["hero-magic_resist"];
 heroDefenseNode.appendChild(heroMagicResistDom);
+
+// modal
+const heroTalentTooltipNode = document.getElementsByClassName("talent-tooltip")[0]
+const heroAbilityTooltipNode = document.getElementsByClassName("ability-tooltip")[0]
+const heroScepterShardTooltipNode = document.getElementsByClassName('scepter-shard-tooltip')[0]
+
+// default let's hide it
+heroTalentTooltipNode.style.display = 'none'
+heroAbilityTooltipNode.style.display = "none";
+heroScepterShardTooltipNode.style.display = "none";
 
 const urlSearchParams = new URLSearchParams(window.location.search);
 const params = Object.fromEntries(urlSearchParams.entries());
 
 heroId = params.heroId ?? 1
 
-
-const getGraphqlData = async(query) => {
-  let response = await fetch(`https://api.stratz.com/graphql`,
-    {
-      method: 'post',
-      body: query,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${STRATZ_API_TOKEN}`
-      }
-    }
-  );
-  let data = await response.json()
-  return data;
-}
-
 async function main() {
-  heroData = await getGraphqlData(heroQuery(heroId))
   heroesData = await getGraphqlData(heroesQuery())
-  rolesData = await getGraphqlData(rolesQuery())
-  abilitiesData = await getGraphqlData(abilitiesQuery())
-  console.log(heroData.data.constants.hero, heroesData.data.constants.heroes, rolesData.data.constants.roles, abilitiesData.data.constants.abilities)
-  const { shortName, abilities, talents, language, stats, roles } = heroData.data.constants.hero
-  const { attackType, primaryAttribute, startingMagicArmor, hpBarOffset, agilityBase, agilityGain, strengthBase, strengthGain, mpRegen, intelligenceBase, intelligenceGain, startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate, complexity } = stats;
-
-  // after all data from api fetch, the card will load finish and rotate 180deg
-  if (heroData && heroesData && rolesData) {
-    heroCardNode.style.transform = 'rotateY(180deg)'
-
-    heroPrimaryAttrNode.style.display = 'flex';
-    heroAttackTypeNode.style.display = 'flex';
-    
-  }
-
-  // first hero by default
-  updateHero(rolesData, shortName, language, roles, attackType, primaryAttribute, startingMagicArmor, hpBarOffset, agilityBase, agilityGain, strengthBase, strengthGain, mpRegen, intelligenceBase, intelligenceGain, startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate, abilities, talents, complexity)
-  // list all heroes
-
-  
-
+  // hero list
   heroListNode.innerHTML = `${filterHerosBasePrimaryAttr(heroesData.data.constants.heroes, 'str')}
   ${filterHerosBasePrimaryAttr(heroesData.data.constants.heroes, 'agi')}
   ${filterHerosBasePrimaryAttr(heroesData.data.constants.heroes, 'int')}`
+
+  abilitiesData = await getGraphqlData(abilitiesQuery())
+
+  await init(heroId);
   
   for (let heroCard of heroCards) {
     heroCard.addEventListener('click', async (e) => {
+      heroVideoNode.setAttribute("src", `./images/Dota2Logo.svg`);
       heroVideoNode.setAttribute("poster", `./images/Dota2Logo.svg`);
       heroVideoSourceNode.setAttribute("src", `./images/Dota2Logo.svg`);
       heroVideoNodeFallbackImgNode.setAttribute("src", `./images/Dota2Logo.svg`);
+
       heroAttackTypeNode.style.display = 'none';
       heroPrimaryAttrNode.style.display = 'none';
       heroCardNode.style.transform = 'rotateY(0deg)'
-      console.log(e.target.getAttribute('data-hero-id'))
       // after click the image, update the hero id and call getGraphqlData() to get speicifi hero data
       heroId = e.target.getAttribute('data-hero-id')
-  
-      heroData = await getGraphqlData(heroQuery(heroId))
-      rolesData = await getGraphqlData(rolesQuery())
-      if (heroData && heroesData && rolesData) {
-        heroCardNode.style.transform = 'rotateY(180deg)'
-    
-        heroPrimaryAttrNode.style.display = 'flex';
-        heroAttackTypeNode.style.display = 'flex';
-      }
-      // after click the image, we need to update the hero video base on its shortName
-      const { shortName, abilities, talents, language, stats, roles } = heroData.data.constants.hero;
-      const { attackType, primaryAttribute, startingMagicArmor, hpBarOffset, agilityBase, agilityGain, strengthBase, strengthGain, mpRegen, intelligenceBase, intelligenceGain, startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate, complexity } = stats;
-      updateHero(rolesData, shortName, language, roles, attackType, primaryAttribute, startingMagicArmor, hpBarOffset, agilityBase, agilityGain, strengthBase, strengthGain, mpRegen, intelligenceBase, intelligenceGain, startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate, abilities, talents, complexity)
+      
+      await init(heroId);
+      
     })
   }
 
@@ -267,6 +175,24 @@ async function main() {
 }
 
 main()
+
+const init = async(heroId) => {
+  heroData = await getGraphqlData(heroQuery(heroId))
+  rolesData = await getGraphqlData(rolesQuery())
+  
+  const { shortName, abilities, talents, language, stats, roles } = heroData.data.constants.hero
+  const { attackType, primaryAttribute, startingMagicArmor, hpBarOffset, agilityBase, agilityGain, strengthBase, strengthGain, mpRegen, intelligenceBase, intelligenceGain, startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate, complexity } = stats;
+
+  // after all data from api fetch, the card will load finish and rotate 180deg
+  if (heroData && rolesData) {
+    heroCardNode.style.transform = 'rotateY(180deg)'
+    heroPrimaryAttrNode.style.display = 'flex';
+    heroAttackTypeNode.style.display = 'flex';
+  }
+
+  // first hero by default
+  updateHero(rolesData, shortName, language, roles, attackType, primaryAttribute, startingMagicArmor, hpBarOffset, agilityBase, agilityGain, strengthBase, strengthGain, mpRegen, intelligenceBase, intelligenceGain, startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate, abilities, talents, complexity)
+}
 
 /**
  * Filter Hero base primary attribute
@@ -292,8 +218,8 @@ function filterHerosBasePrimaryAttr(heros, primaryAttribute) {
     list.appendChild(heroNode)
   }
   return `
-  <div class="hero-list-${primaryAttrList[primaryAttribute]}">
-      <h2 class="hero-list-heading"><img src="./images/${primaryAttrList[primaryAttribute]}.png" alt="Strenth hereos">${formatText(primaryAttrList[primaryAttribute], "_", 1)}</h2>
+  <div class="hero-list-${PRIMARY_ATTR_LIST[primaryAttribute]}">
+      <h2 class="hero-list-heading"><img src="./images/${PRIMARY_ATTR_LIST[primaryAttribute]}.png" alt="Strenth hereos">${formatText(PRIMARY_ATTR_LIST[primaryAttribute], "_", 1)}</h2>
       ${list.innerHTML}
   </div>`
 }
@@ -334,15 +260,15 @@ function updateHero(rolesData, shortName, language, roles, attackType, primaryAt
   setHeroName(language.displayName)
   setHeroAttackType(attackType)
   setHeroPrimaryAttribute(primaryAttribute)
-  setHeroBase(primaryAttribute, agilityBase, agilityGain, intelligenceBase, intelligenceGain, strengthBase, strengthGain)
   setHeroRoles(rolesData.data.constants.roles, roles)
   setHeroHPMP(hpBarOffset, strengthBase, mpRegen, intelligenceBase)
   setHeroBasic(startingDamageMin, startingDamageMax, attackRange, attackRate, startingArmor, startingMagicArmor, moveSpeed, visionNighttimeRange, visionDaytimeRange, moveTurnRate)
+  setHeroBase(primaryAttribute, agilityBase, agilityGain, intelligenceBase, intelligenceGain, strengthBase, strengthGain)
   setHeroAbilities(abilities);
   setHeroTalents(talents, abilitiesData.data.constants.abilities);
+  setHeroComplexity(complexity)
   setHeroAbilityHover(abilities)
   setHeroScepterShard(abilities)
-  setHeroComplexity(complexity)
 }
 
 // img tag fallbacka dota2 logo if on error
@@ -357,6 +283,7 @@ for (let i of imgs) {
    */
  function setHeroVideo(shortName) {
   // video poster
+  heroVideoNode.setAttribute("src", VIDEO_URL + shortName + ".webm");
   heroVideoNode.setAttribute("poster", VIDEO_URL + shortName + ".png");
   heroVideoNodeFallbackImgNode.setAttribute("src", VIDEO_URL + shortName + ".png");
 
@@ -385,8 +312,8 @@ function setHeroAttackType(attackType) {
  * @param {string} primaryAttribute - Hero primary attribute
  */
 function setHeroPrimaryAttribute(primaryAttribute) {
-  heroPrimaryAttrDom.setAttribute("src", `./images/${primaryAttrList[primaryAttribute]}.png`)
-  //heroPrimaryAttrDom.setAttribute("src", ICON_URL + primaryAttrList[primaryAttribute] + ".png")
+  heroPrimaryAttrDom.setAttribute("src", `./images/${PRIMARY_ATTR_LIST[primaryAttribute]}.png`)
+  //heroPrimaryAttrDom.setAttribute("src", ICON_URL + PRIMARY_ATTR_LIST[primaryAttribute] + ".png")
 }
 
 /**
@@ -577,8 +504,8 @@ heroScepterShardNode.addEventListener("mouseover", (e) => {
   const tooltipHeight = heroScepterShardTooltipNode.offsetHeight;
   const tooltipWidth = heroScepterShardTooltipNode.offsetWidth;
 
-  const tooltipX = heroCard["offsetLeft"] + heroScepterShard["offsetLeft"] + heroScepterShard["width"]/2 - tooltipWidth/2 + heroAbilitiesTalent['offsetLeft'] + 'px'
-  const tooltipY = heroCard["offsetTop"] + heroScepterShard["offsetTop"] - tooltipHeight + heroAbilitiesTalent['offsetLeft'] + 'px'
+  const tooltipX = heroCard["offsetLeft"] + heroScepterShard["offsetLeft"] + heroScepterShard["width"] + heroAbilitiesTalent['offsetLeft'] + 'px'
+  const tooltipY = heroCard["offsetTop"] + heroScepterShard["offsetTop"] + heroScepterShard['height']/2- tooltipHeight/2 + heroAbilitiesTalent['offsetLeft'] + 'px'
 
   heroScepterShardTooltipNode.style.left = tooltipX;
   heroScepterShardTooltipNode.style.top = tooltipY;
@@ -657,45 +584,18 @@ const abilityTooltipTem =  (abilityName, abilities) => {
   const { cooldown, manaCost, unitDamageType, dispellable, spellImmunity, unitTargetTeam} = stat
   const { displayName, description } = language
   const imgData = `${STRATZ_ABLITY_URL}/${name}.png`;
+  let newAbilityHTML = "";
 
-  let attribData = '';
-  if (attributes) {
-    for (let attr of attributes) {
-      const { name, value } = attr
-      const nameData = name.replaceAll('_', ' ').toUpperCase();
-      const valueData = value.replaceAll(' ', ' / ')
-      attribData += `<div class="item-row"><label>${nameData}:</label><span class="item-value"> ${valueData} </span></div>`
-    }
-  }
-
-  let dmgTypeText;
-
-  if (unitDamageType === 1) {
-    dmgTypeText = 'red-txt'
-  } else if (unitDamageType === 2) {
-    dmgTypeText = 'blue-txt'
-  } else {
-    dmgTypeText = 'agree-txt'
-  }
-
-  const mcData = manaCost !== null ? manaCost.join(' / ') : 'NA';
-  const cdData = cooldown !== null ? cooldown.join(' / ') : 'NA';
-
-  // whether the ability isUpgrade isGranded scepter or shard
-  //hasScepterUpgrade: true
-  //isGrantedByScepter: true
-  //isGrantedByShard: false
-
-  // some behavior is string only, some are array
-  // const behaviorHTML = behavior ? `<div class="item-row"><label>TARGET:</label> ${behaviorAbilityList(behavior)}</div>` : '';
-  const dispellableHTML = dispellable === 'YES' ? `<div class="item-row"><label>DISPELLABLE:</label> ${dispellable}</div>` : '';
-  
-  const unitTargetTeamHTML = unitTargetTeam ? `<div class="item-row"><label>DAMAGE AFFECTS:</label> ${formatText(DOTA_UNIT_TARGET_TEAM[unitTargetTeam], '_', 4)}</div>` : '';
-
-  const dmgTypeHTML = unitDamageType ? `<div class="item-row"><label>DAMAGE TYPE:</label><span class="${dmgTypeText}">${formatText(DAMAGE_TYPES[unitDamageType], '_', 2)}</span></div>` : '';
-  
-  const spellImmunityText = spellImmunity !== 4 ? 'green-txt' : 'red-txt';
-  const spellImmunityHTML = spellImmunity ? `<div class="item-row"><label>PIERCES SPELL IMMUNITY:</label><span class="${spellImmunityText}">${spellImmunityList[spellImmunity]}</span></div>` : '';
+  newAbilityHTML = abilitiesScepterShardCommonContent(
+    attributes,
+    unitDamageType,
+    manaCost,
+    cooldown,
+    dispellable,
+    unitTargetTeam,
+    spellImmunity,
+    description
+  );
   return `
     <div class="item-main box">
       <img height="50px" src="${imgData}" onerror="this.src='${IMG_ONERROR}'" />
@@ -703,35 +603,7 @@ const abilityTooltipTem =  (abilityName, abilities) => {
         <h3>${displayName}</h3>
       </div>
     </div>
-    <div class="item-sub box">
-      ${unitTargetTeamHTML}
-      ${dispellableHTML}
-      ${dmgTypeHTML}
-      ${spellImmunityHTML}
-    </div>
-    <div class="item-desc box">${description[0]}</div>
-    ${attributes ?
-    `<div class="item-sub box">
-      ${attribData}
-    </div>`
-    : '' }
-    
-    ${manaCost !== null && cooldown !== null ?
-    `<div class="item-mc-cd">
-      ${manaCost !== null ? 
-      `<span class="item-mc">
-        <img width="15px" height="15px" src="./images/cooldown.png">
-        ${mcData}
-      </span>`
-      : '' }
-      ${cooldown !== null ? 
-      `<span class="item-cd">
-        <span class="mana-icon"></span>
-        ${cdData}
-      </span>`
-      :'' }
-    </div>`
-    : ''}
+    ${newAbilityHTML}
   `
 }
 
@@ -798,75 +670,15 @@ const scepterShardTooltipTem = (ability, isScepterOrShard) => {
   }
 
   if (upgradeOrNewText === 'NEW') {
-    let attribData = '';
-    if (attributes) {
-      for (let attr of attributes) {
-        const { name, value } = attr
-        const nameData = name.replaceAll('_', ' ').toUpperCase();
-        const valueData = value.replaceAll(' ', ' / ')
-        attribData += `<div class="item-row"><label>${nameData}:</label><span class="item-value"> ${valueData} </span></div>`
-      }
-    }
-
-    let dmgTypeText;
-
-    if (unitDamageType === 1) {
-      dmgTypeText = 'red-txt'
-    } else if (unitDamageType === 2) {
-      dmgTypeText = 'blue-txt'
-    } else {
-      dmgTypeText = 'agree-txt'
-    }
-
-    const mcData = manaCost !== null ? manaCost.join(' / ') : 'NA';
-    const cdData = cooldown !== null ? cooldown.join(' / ') : 'NA';
-
-    // whether the ability isUpgrade isGranded scepter or shard
-    //hasScepterUpgrade: true
-    //isGrantedByScepter: true
-    //isGrantedByShard: false
-
-    // some behavior is string only, some are array
-    // const behaviorHTML = behavior ? `<div class="item-row"><label>TARGET:</label> ${behaviorAbilityList(behavior)}</div>` : '';
-    const dispellableHTML = dispellable === 'YES' ? `<div class="item-row"><label>DISPELLABLE:</label> ${dispellable}</div>` : '';
-    
-    const unitTargetTeamHTML = unitTargetTeam ? `<div class="item-row"><label>DAMAGE AFFECTS:</label> ${formatText(DOTA_UNIT_TARGET_TEAM[unitTargetTeam], '_', 4)}</div>` : '';
-
-    const dmgTypeHTML = unitDamageType ? `<div class="item-row"><label>DAMAGE TYPE:</label><span class="${dmgTypeText}">${formatText(DAMAGE_TYPES[unitDamageType], '_', 2)}</span></div>` : '';
-    
-    const spellImmunityText = spellImmunity !== 4 ? 'green-txt' : 'red-txt';
-    const spellImmunityHTML = spellImmunity ? `<div class="item-row"><label>PIERCES SPELL IMMUNITY:</label><span class="${spellImmunityText}">${spellImmunityList[spellImmunity]}</span></div>` : '';
-  
-
-    newAbilityHTML = `
-      <div class="item-sub box">
-        ${unitTargetTeamHTML}
-        ${dispellableHTML}
-        ${dmgTypeHTML}
-        ${spellImmunityHTML}
-      </div>
-      ${attributes ?
-      `<div class="item-sub box">
-        ${attribData}
-      </div>`
-      : '' }
-      
-      ${manaCost !== null && cooldown !== null ?
-      `<div class="item-mc-cd">
-        ${manaCost !== null ? 
-        `<span class="item-mc">
-          <img width="15px" height="15px" src="./images/cooldown.png">
-          ${mcData}
-        </span>`
-        : '' }
-        ${cooldown !== null ? 
-        `<span class="item-cd">
-          <span class="mana-icon"></span>
-          ${cdData}
-        </span>`
-        :'' }
-      </div>`
-      : ''}`
+    newAbilityHTML = abilitiesScepterShardCommonContent(
+      attributes,
+      unitDamageType,
+      manaCost,
+      cooldown,
+      dispellable,
+      unitTargetTeam,
+      spellImmunity
+    );
   }
 
 
@@ -890,13 +702,119 @@ const scepterShardTooltipTem = (ability, isScepterOrShard) => {
 </div>`
 }
 
+function abilitiesScepterShardCommonContent(
+  attributes,
+  unitDamageType,
+  manaCost,
+  cooldown,
+  dispellable,
+  unitTargetTeam,
+  spellImmunity,
+  description = ''
+) {
+  let attribData = "";
+  if (attributes) {
+    for (let attr of attributes) {
+      const { name, value } = attr;
+      const nameData = name.replaceAll("_", " ").toUpperCase();
+      const valueData = value.replaceAll(" ", " / ");
+      attribData += `<div class="item-row"><label>${nameData}:</label><span class="item-value"> ${valueData} </span></div>`;
+    }
+  }
+
+  let dmgTypeText;
+
+  if (unitDamageType === 1) {
+    dmgTypeText = "red-txt";
+  } else if (unitDamageType === 2) {
+    dmgTypeText = "blue-txt";
+  } else {
+    dmgTypeText = "agree-txt";
+  }
+
+  const mcData = manaCost !== null ? manaCost.join(" / ") : "NA";
+  const cdData = cooldown !== null ? cooldown.join(" / ") : "NA";
+
+  // whether the ability isUpgrade isGranded scepter or shard
+  //hasScepterUpgrade: true
+  //isGrantedByScepter: true
+  //isGrantedByShard: false
+
+  // some behavior is string only, some are array
+  // const behaviorHTML = behavior ? `<div class="item-row"><label>TARGET:</label> ${behaviorAbilityList(behavior)}</div>` : '';
+  const dispellableHTML =
+    dispellable === "YES"
+      ? `<div class="item-row"><label>DISPELLABLE:</label> ${dispellable}</div>`
+      : "";
+
+  const unitTargetTeamHTML = unitTargetTeam
+    ? `<div class="item-row"><label>DAMAGE AFFECTS:</label> ${formatText(
+        DOTA_UNIT_TARGET_TEAM[unitTargetTeam],
+        "_",
+        4
+      )}</div>`
+    : "";
+
+  const dmgTypeHTML = unitDamageType
+    ? `<div class="item-row"><label>DAMAGE TYPE:</label><span class="${dmgTypeText}">${formatText(
+        DAMAGE_TYPES[unitDamageType],
+        "_",
+        2
+      )}</span></div>`
+    : "";
+
+  const spellImmunityText = spellImmunity !== 4 ? "green-txt" : "red-txt";
+  const spellImmunityHTML = spellImmunity
+    ? `<div class="item-row"><label>PIERCES SPELL IMMUNITY:</label><span class="${spellImmunityText}">${SPELL_IMMUNITY_LIST[spellImmunity]}</span></div>`
+    : "";
+
+  return `
+      <div class="item-sub box">
+        ${unitTargetTeamHTML}
+        ${dispellableHTML}
+        ${dmgTypeHTML}
+        ${spellImmunityHTML}
+      </div>
+      ${ description ? `<div class="item-desc box">${description[0]}</div>` : ''}
+      ${
+        attributes
+          ? `<div class="item-sub box">
+        ${attribData}
+      </div>`
+          : ""
+      }
+      
+      ${
+        manaCost !== null && cooldown !== null
+          ? `<div class="item-mc-cd">
+        ${
+          manaCost !== null
+            ? `<span class="item-mc">
+          <img width="15px" height="15px" src="./images/cooldown.png">
+          ${mcData}
+        </span>`
+            : ""
+        }
+        ${
+          cooldown !== null
+            ? `<span class="item-cd">
+          <span class="mana-icon"></span>
+          ${cdData}
+        </span>`
+            : ""
+        }
+      </div>`
+          : ""
+      }`;
+}
+
+// hero cards
 const complexityNode = document.getElementsByClassName('complexity')
 // conver the HTMLColletion to arry
 var complexities = Array.prototype.slice.call( complexityNode )
 complexities.forEach((complexity, index, arr)  => {
-  complexity.addEventListener('click', (e) => {
-    const st = e.target.getAttribute('data-selected')
-    console.log(complexity.getAttribute('data-selected'))
+  complexity.addEventListener('click', function() {
+    const st = this.getAttribute('data-selected')
     // reset all data-select, and reset all actived
     arr.map(i => {
       i.setAttribute('data-selected', 'false')
@@ -905,7 +823,7 @@ complexities.forEach((complexity, index, arr)  => {
     // previous item will add actived class
     const activeds = arr.slice(0, index + 1)
     activeds.map(a => a.classList.add('filter-actived'))
-    e.target.setAttribute('data-selected', st === 'false' ? 'true' : 'false')
+    this.setAttribute('data-selected', st === 'false' ? 'true' : 'false')
 
     // after e.target is true, we wanna reset if click again
     if (st === "true") {
@@ -917,7 +835,7 @@ complexities.forEach((complexity, index, arr)  => {
 
     // logic for filter heros
     for(let heroCard of heroCards) {
-      if (heroCard.getAttribute('data-complexity-value') !== e.target.getAttribute('data-complexity-value') && st === 'false') {
+      if (heroCard.getAttribute('data-complexity-value') !== this.getAttribute('data-complexity-value') && st === 'false') {
         heroCard.classList.add('grey-out')
       } else {
         heroCard.classList.remove('grey-out')
