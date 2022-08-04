@@ -568,7 +568,7 @@ let heroId = 1
 // get DOM element node
 const heroCardNode = document.getElementsByClassName("hero-card")[0]
 const heroCardFrontNode = document.getElementsByClassName("hero-card-front")[0]
-const heroAbilitiesListNode = heroCardFrontNode.getElementsByClassName("hero-abilities")[0]
+const heroAbilitiesListNode = heroCardFrontNode.getElementsByClassName("hero-abilities-list")[0]
 const heroVideoNode = heroCardFrontNode.getElementsByClassName("hero-video")[0]
 // const heroAttackTypeNode = heroCardFrontNode.getElementsByClassName("hero-attack_type")[0]
 // const heroPrimaryAttrNode = heroCardFrontNode.getElementsByClassName("hero-primary_attr")[0]
@@ -787,16 +787,17 @@ async function main() {
 
   // hove on talent node
   heroTalentNode.addEventListener("mouseover", (e) => {
-    const heroTalent = e["path"].filter(i => i["className"] === 'hero-talent')[0];
+    const heroTalent = e.target;
     const heroCard = e["path"].filter(i => i["className"] === 'hero-card')[0];
+    const heroAbilitiesTalent = e["path"].filter(p => p["className"] === 'hero-abilities-talent')[0];
 
     heroTalentTooltipNode.style.display = 'flex'
     // we need to displayy it then get the offsetHieght and width
     const tooltipHeight = heroTalentTooltipNode.offsetHeight;
     const tooltipWidth = heroTalentTooltipNode.offsetWidth;
 
-    const tooltipX = heroCard["offsetLeft"] + heroTalent["offsetLeft"] + heroTalent["width"]/2 - tooltipWidth/2 + 'px'
-    const tooltipY = heroCard["offsetTop"] + heroTalent["offsetTop"] - tooltipHeight - 10 + 'px'
+    const tooltipX = heroCard["offsetLeft"] + heroTalent["offsetLeft"] + heroTalent["width"]/2 - tooltipWidth/2 + heroAbilitiesTalent['offsetLeft'] + 'px'
+    const tooltipY = heroCard["offsetTop"] + heroTalent["offsetTop"] - tooltipHeight + heroAbilitiesTalent['offsetLeft'] + 'px'
 
     heroTalentTooltipNode.style.left = tooltipX;
     heroTalentTooltipNode.style.top = tooltipY;
@@ -811,10 +812,11 @@ async function main() {
   heroAbilityTooltipNode.style.display = "none";
 
   const heroAbilitiesList = heroCardFrontNode.getElementsByClassName('hero-ability')
-  for (i of heroAbilitiesList) {
+  for (let i of heroAbilitiesList) {
     i.addEventListener('mouseover', (e) => {
-      const heroAbility = e["path"].filter(p => p["className"] === 'hero-ability')[0];
+      const heroAbility = e.target;
       const heroCard = e["path"].filter(p => p["className"] === 'hero-card')[0];
+      const heroAbilitiesTalent = e["path"].filter(p => p["className"] === 'hero-abilities-talent')[0];
 
       heroAbilityTooltipNode.innerHTML = abilityTooltipTem(heroAbility.getAttribute('data-ability'));
       heroAbilityTooltipNode.style.display = 'block'
@@ -826,11 +828,11 @@ async function main() {
 
       // here, the tooltip height is bigger than the position, then we should adjust the tooltip display
       if (tooltipHeight > (heroCard["offsetTop"] + heroAbility["offsetTop"] - 20)) {
-      tooltipX =  heroCard["offsetLeft"] + heroAbility["offsetLeft"] + heroAbility["width"] + 20 + 'px'
+      tooltipX =  heroCard["offsetLeft"] + heroAbility["offsetLeft"] + heroAbility["width"] + heroAbilitiesTalent['offsetLeft'] + 'px'
       tooltipY = heroCard["offsetTop"] + heroAbility["offsetTop"] + heroAbility["height"]/2  - tooltipHeight/2 + 'px'
       } else {
-        tooltipX = heroCard["offsetLeft"] + heroAbility["offsetLeft"] + heroAbility["width"]/2 - tooltipWidth/2 + 'px'
-        tooltipY = heroCard["offsetTop"] + heroAbility["offsetTop"] - tooltipHeight - 20 + 'px'
+        tooltipX = heroCard["offsetLeft"] + heroAbility["offsetLeft"] + heroAbility["width"]/2 - tooltipWidth/2 + heroAbilitiesTalent['offsetLeft'] + 'px'
+        tooltipY = heroCard["offsetTop"] + heroAbility["offsetTop"] - tooltipHeight + heroAbilitiesTalent['offsetLeft'] + 'px'
       }
 
       heroAbilityTooltipNode.style.left = tooltipX;
@@ -853,7 +855,7 @@ const abilityTooltipTem =  (abilityName) => {
   const imgData = ABILITIES_URL + img;
 
   let attribData = '';
-  for (attr of attrib) {
+  for (let attr of attrib) {
     const { header, value } = attr
     const valueData = (value instanceof Array) ? value.join(' / ') : value
     attribData += `<div class="item-row"><label>${header}:</label><span class="item-value"> ${valueData} </span></div>`

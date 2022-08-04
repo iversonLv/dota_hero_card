@@ -153,6 +153,7 @@ async function main() {
 
   await init(heroId);
   
+  // click hero small card need update the big card
   for (let heroCard of heroCards) {
     heroCard.addEventListener('click', async (e) => {
       heroVideoNode.setAttribute("src", `./images/Dota2Logo.svg`);
