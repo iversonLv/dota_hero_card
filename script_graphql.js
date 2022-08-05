@@ -444,7 +444,7 @@ function setHeroAbilities(abilities) {
   // if isGrantedByScepter then use the language/description directily
   // if isGrantedByScepter must hasScepterUpgrade
   // hasScepterUpgrade
-  const abilitiesIsGrantedByShard = abilities.filter(i => !!i['ability']['language']['shardDescription'] || i['ability']['stat']['isGrantedByShard'])[0]
+  const abilitiesIsGrantedByShard = abilities.filter(i => !!i['ability']['language']?.shardDescription || i['ability']['stat']['isGrantedByShard'])[0]
 
   // append hero abilities
   for (let i of onlyNoramlAbilities) {
@@ -652,7 +652,7 @@ const scepterShardTooltipTem = (ability, isScepterOrShard) => {
   }
   const { stat, language, name, attributes } = ability['ability']
   const { hasScepterUpgrade, isGrantedByShard, cooldown, manaCost, unitDamageType, dispellable, spellImmunity, unitTargetTeam } = stat
-  const { aghanimDescription, description, displayName, shardDescription } = language
+  const { aghanimDescription, description, displayName, shardDescription } = language || {}
   const imgData = `${STRATZ_ABLITY_URL}/${name}.png`;
   let isScepterUpgradeHTML;
   let upgradeOrNewText = 'UPGRADE';
