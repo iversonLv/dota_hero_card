@@ -328,7 +328,7 @@ function setHeroRoles(rolesData, roles) {
   for (let role of roles) {
     const heroRolesDom = document.createElement('span');
     heroRolesDom.classList.add('hero-roles')
-    heroRolesDom.innerHTML = rolesData[role["roleId"]]['name'] + ", "
+    heroRolesDom.innerHTML = role["roleId"] + ", "
     heroRolesNode.appendChild(heroRolesDom);
   }
 }
@@ -438,16 +438,16 @@ function setHeroAbilities(abilities) {
   abilities = abilities.filter(i => i['ability']['name'] !== "generic_hidden")
   // abilities = abilities.filter(i => i['ability']['attributes'])
   // only list normal abilities
-  abilities = abilities.filter(i => !i['ability']['stat']['isGrantedByScepter'] && !i['ability']['stat']['isGrantedByShard'])
+  const onlyNoramlAbilities = abilities.filter(i => !i['ability']['stat']['isGrantedByScepter'] && !i['ability']['stat']['isGrantedByShard'])
 
-  const abilitiesIsGrantedByScepter = abilities.filter(i => i['ability']['stat']['isGrantedByScepter'] || (i['ability']['stat']['hasScepterUpgrade'] && i['ability']['language']['aghanimDescription']))[0]
+  const abilitiesIsGrantedByScepter = abilities.filter(i => i['ability']['stat']['isGrantedByScepter'] || i['ability']['stat']['hasScepterUpgrade'])[0]
   // if isGrantedByScepter then use the language/description directily
   // if isGrantedByScepter must hasScepterUpgrade
   // hasScepterUpgrade
-  const abilitiesIsGrantedByShard = abilities.filter(i => i['ability']['stat']['isGrantedByShard'] || i['ability']['language']['shardDescription'])[0]
+  const abilitiesIsGrantedByShard = abilities.filter(i => !!i['ability']['language']['shardDescription'] || i['ability']['stat']['isGrantedByShard'])[0]
 
   // append hero abilities
-  for (let i of abilities) {
+  for (let i of onlyNoramlAbilities) {
     const heroAbilityDom = document.createElement('img');
     heroAbilityDom.setAttribute("onerror", `this.src="${IMG_ONERROR}"`)
     heroAbilityDom.setAttribute("src", `${STRATZ_ABLITY_URL}/${i['ability']['name']}.png`)
@@ -458,11 +458,8 @@ function setHeroAbilities(abilities) {
     }
     heroAbilitiesListNode.appendChild(heroAbilityDom);
   }
-  if (!abilitiesIsGrantedByScepter && !abilitiesIsGrantedByShard) {
-    heroScepterShardNode.setAttribute('src', './images/aghs_scepter_0.png')
-  } else {
-    heroScepterShardNode.setAttribute('src', './images/aghs_scepter.png')
-  }
+  console.log('scepter:', abilitiesIsGrantedByScepter, 'shard:',abilitiesIsGrantedByShard)
+  heroScepterShardNode.setAttribute('src', `./images/aghs_${!!abilitiesIsGrantedByScepter ? 1 : 0}_scepter_${!!abilitiesIsGrantedByShard ? 1 : 0}.png`)
 }
 
 /**
@@ -472,7 +469,7 @@ function setHeroAbilities(abilities) {
  */
 function setHeroTalents(talents, abilitiesData) {
   heroTalentTooltipNode.innerHTML = '';
-  console.log(abilitiesData)
+  //console.log(abilitiesData)
   // talents
   talents = talents.reverse();
   // append hero talent
@@ -480,9 +477,9 @@ function setHeroTalents(talents, abilitiesData) {
     const heroTalentsDom = document.createElement('span');
     heroTalentTooltipNode.appendChild(heroTalentsDom);
     const heroTalentData = abilitiesData.find(ability => ability['id'] === talent['abilityId'])
-    console.log(talent, heroTalentData)
+    //console.log(talent, heroTalentData)
     
-    heroTalentsDom.innerHTML = heroTalentData.language.displayName ?? 'loading';
+    heroTalentsDom.innerHTML = heroTalentData.language?.displayName ?? 'loading';
     heroTalentsDom.classList = [`talent-rows item${talent["slot"]}`]
   }
 
@@ -544,7 +541,6 @@ function setHeroAbilityHover(abilities) {
   const heroAbilitiesList = heroCardFrontNode.getElementsByClassName('hero-ability')
   for (let i of heroAbilitiesList) {
     i.addEventListener('mouseover', (e) => {
-      console.log(e)
       const heroAbility = e.target
       const heroCard = e["path"].filter(p => p["className"] === 'hero-card')[0];
       const heroAbilitiesTalent = e["path"].filter(p => p["className"] === 'hero-abilities-talent')[0];
@@ -580,7 +576,7 @@ function setHeroAbilityHover(abilities) {
 
 const abilityTooltipTem =  (abilityName, abilities) => {
   const ability = abilities.find(ability => ability.ability.name === abilityName)
-  console.log(ability)
+  //console.log(ability)
   const { name, language, attributes, stat } = ability.ability
   const { cooldown, manaCost, unitDamageType, dispellable, spellImmunity, unitTargetTeam} = stat
   const { displayName, description } = language
@@ -623,14 +619,14 @@ function setHeroComplexity(complexity) {
 
 function setHeroScepterShard(abilities) {
   heroScepterShardTooltipNode.innerHTML = '';
-  console.log(abilities)
+  //console.log(abilities)
   abilities = abilities.filter(i => i['ability']['name'] !== "generic_hidden")
 
-  const abilitiesIsGrantedByScepter = abilities.filter(i => i['ability']['stat']['isGrantedByScepter'] || (i['ability']['stat']['hasScepterUpgrade'] && i['ability']['language']['aghanimDescription']))[0]
+  const abilitiesIsGrantedByScepter = abilities.filter(i => i['ability']['stat']['isGrantedByScepter'] || (i['ability']['stat']['hasScepterUpgrade'] && (i['ability']['language']?.aghanimDescription || i['ability']['language']?.description[0])))[0]
   // if isGrantedByScepter then use the language/description directily
   // if isGrantedByScepter must hasScepterUpgrade
   // hasScepterUpgrade
-  const abilitiesIsGrantedByShard = abilities.filter(i => i['ability']['stat']['isGrantedByShard'] || i['ability']['language']['shardDescription'])[0]
+  const abilitiesIsGrantedByShard = abilities.filter(i => i['ability']['stat']['isGrantedByShard'] || i['ability']['language']?.shardDescription)[0]
   // shardDescription might not have isGrantedByShard
 
   return heroScepterShardTooltipNode.innerHTML = `
@@ -642,7 +638,7 @@ function setHeroScepterShard(abilities) {
 
 const scepterShardTooltipTem = (ability, isScepterOrShard) => {
   
-  console.log(ability)
+  //console.log(ability)
   if (!ability) { 
     return `<div class="${isScepterOrShard} scepter-shard-row">
       <div class="item-main box">
