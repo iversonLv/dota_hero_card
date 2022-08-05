@@ -62,6 +62,7 @@ h1 {
   background-image: url(./images/greyfade.jpg);
   background-color: var(--dark-surface);
   background-size: 100% 100%;
+  z-index: 2;
   position: absolute;
   left: 0;
   right: 0;
